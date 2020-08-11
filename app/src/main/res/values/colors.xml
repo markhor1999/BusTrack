@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#D22E42</color>
+    <color name="colorPrimaryDark">#bf1126</color>
+    <color name="colorAccent">#E4DCE0</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLight">#F8A59E</color>
+    <color name="red_background_light">#eb7575</color>
+
+    <color name="blank">#696969</color>
+
+    <color name="home">#2196F3</color>
+    <color name="student_tab">#673AB7</color>
+    <color name="bus_tab">#E91E63</color>
+    <color name="settings">#4CAF50</color>
+</resources>

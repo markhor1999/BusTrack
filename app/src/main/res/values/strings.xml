@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BusTrack</string>
+    <string name="email_text">Email</string>
+    <string name="password_text">Password</string>
+    <string name="name_text">Name</string>
+    <string name="logo_here">Logo Here</string>
+    <string name="login_text">Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="google_maps_key">AIzaSyC91cNRPfZ-mY_au4eYFIa0jpidLVjPoco</string>
+    <string name="home">Home</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

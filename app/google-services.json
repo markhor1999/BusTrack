@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "493035448506",
+    "firebase_url": "https://bustrack-d545d.firebaseio.com",
+    "project_id": "bustrack-d545d",
+    "storage_bucket": "bustrack-d545d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493035448506:android:d522453807e56069c63a83",
+        "android_client_info": {
+          "package_name": "com.markhor.bustrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493035448506-nt8jlq04n6k2kkfl8f11eg28ie0r2ml6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARSqIh17vy5XhldisU9V3prwixy0DGooQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493035448506-nt8jlq04n6k2kkfl8f11eg28ie0r2ml6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
