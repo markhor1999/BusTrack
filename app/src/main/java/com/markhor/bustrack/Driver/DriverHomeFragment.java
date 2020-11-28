@@ -21,12 +21,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -66,12 +71,8 @@ public class DriverHomeFragment extends Fragment implements OnMapReadyCallback {
 
     //
     private BusLocations mBusLocations;
-    private GeoPoint mDriverGeoPoint;
     //Google Maps
     private GoogleMap mGooleMap;
-    private LatLngBounds mLatLngBounds;
-    private double mDriverLat;
-    private double mDriverLog;
     //
 
 
@@ -132,16 +133,13 @@ public class DriverHomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     //get The Bus Location And Other Driver Information of Currently Logged in User
-    private void getCurrentDriverDetails()
-    {
-        if(mBusLocations == null)
-        {
+    private void getCurrentDriverDetails() {
+        if (mBusLocations == null) {
             DocumentReference busLocationRef = mRootRef.collection("Bus Locations").document(mCurrentDriverId);
             busLocationRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful())
-                    {
+                    if (task.isSuccessful()) {
                         mBusLocations = Objects.requireNonNull(task.getResult()).toObject(BusLocations.class);
                         Log.d(TAG, "onComplete: getCurrentDriverDetails Done");
                         Log.d(TAG, "onComplete: lat: " + mBusLocations.getGeoPoint().getLatitude());
@@ -173,23 +171,32 @@ public class DriverHomeFragment extends Fragment implements OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        googleMap.setMyLocationEnabled(true);
+        //googleMap.setMyLocationEnabled(true);
         mGooleMap = googleMap;
         getCurrentDriverDetails();
     }
 
-    private void setCameraView(double latitude, double longitude)
-    {
-        double bottomBoundary = latitude - .1;
+    private void setCameraView(double latitude, double longitude) {
+        /*double bottomBoundary = latitude - .1;
         double leftBoundary = longitude - .1;
         double topBoundary = latitude + .1;
-        double rightBoundary = longitude + .1;
-        mLatLngBounds = new LatLngBounds(
-                new LatLng(bottomBoundary, leftBoundary),
-                new LatLng(topBoundary, rightBoundary)
-        );
-        mGooleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mLatLngBounds, 500));
+        double rightBoundary = longitude + .1;*/
+        mGooleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title("Your Current Location")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .flat(true)
+        .zIndex(2.0f));
+        CameraPosition position = new CameraPosition.Builder()
+                .target(new LatLng(latitude, longitude))
+                .zoom(14)
+                .tilt(20)
+                .build();
+        mGooleMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
+
+        //mGooleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(mLatLngBounds,0));
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

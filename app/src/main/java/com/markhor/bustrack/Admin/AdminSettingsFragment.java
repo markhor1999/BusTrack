@@ -3,6 +3,7 @@ package com.markhor.bustrack.Admin;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -10,10 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.markhor.bustrack.MainActivity;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.markhor.bustrack.LoginActivity;
 import com.markhor.bustrack.R;
-import com.markhor.bustrack.Student.StudentHomeActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,8 +27,12 @@ import com.markhor.bustrack.Student.StudentHomeActivity;
  * create an instance of this fragment.
  */
 public class AdminSettingsFragment extends Fragment {
+    private TextInputLayout mAdminEmail, mAdminName;
+
     private Button mAdminLogoutButton;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mRootRef;
+    private String mCurrentStudentID;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,17 +80,36 @@ public class AdminSettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_admin_settings, container, false);
         mAdminLogoutButton = view.findViewById(R.id.admin_settings_logout_btn);
+        mAdminEmail = view.findViewById(R.id.admin_setting_email);
+        mAdminName = view.findViewById(R.id.admin_setting_name);
         mAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseFirestore.getInstance();
+        mCurrentStudentID = mAuth.getCurrentUser().getUid();
+
+        getDataOfCurrentUser();
 
         mAdminLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
         return view;
+    }
+
+    private void getDataOfCurrentUser() {
+        DocumentReference documentReference = mRootRef.collection("Admins").document(mCurrentStudentID);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    mAdminEmail.getEditText().setText(task.getResult().get("emal").toString());
+                    mAdminName.getEditText().setText(task.getResult().get("name").toString());
+                }
+            }
+        });
     }
 }

@@ -7,91 +7,104 @@
     android:background="@color/colorWhite"
     tools:context=".Admin.AdminBusFragment">
 
+    <RelativeLayout
+        android:id="@+id/head_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/background_for_signup">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toLeftOf="@+id/driver_text_head"
+            android:src="@drawable/bus_white" />
+
+        <TextView
+            android:id="@+id/driver_text_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/noticia_text"
+            android:text="Driver Registration"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/head_relative_layout"
+        android:layout_margin="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_margin="20dp"
-        android:layout_centerInParent="true"
         android:orientation="vertical">
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_bus_full_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Driver Registration"
-            android:textSize="30sp"
-            android:textColor="#000428"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:fontFamily="@font/noticia_text"/>
+            android:hint="Driver Name">
 
-        <LinearLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:textColor="@color/colorBlack"
+                android:textCursorDrawable="@drawable/edit_text_cursor" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_bus_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
+            android:hint="Driver Email">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/admin_bus_full_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Driver Name">
+                android:layout_height="match_parent"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorBlack"
+                android:textCursorDrawable="@drawable/edit_text_cursor" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:textCursorDrawable="@drawable/edit_text_cursor"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_bus_phone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone#">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/admin_bus_email"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Driver Email">
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:textColor="@color/colorBlack"
+                android:textCursorDrawable="@drawable/edit_text_cursor" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textCursorDrawable="@drawable/edit_text_cursor"
-                    android:textColor="@color/colorBlack"
-                    android:inputType="textEmailAddress" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/admin_bus_bus_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Bus Number">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/admin_bus_phone"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phone#">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textCursorDrawable="@drawable/edit_text_cursor"
-                    android:textColor="@color/colorBlack"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/admin_bus_bus_number"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Bus Number">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textCursorDrawable="@drawable/edit_text_cursor"
-                    android:textColor="@color/colorBlack"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:textColor="@color/colorBlack"
+                android:textCursorDrawable="@drawable/edit_text_cursor" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <include
             android:id="@+id/admin_bus_signup_btn"

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/student_home"
+        android:icon="@drawable/ic__home"
+        android:title="Home"
+        app:cnb_backgroundColor="@color/colorWhite"
+        app:cnb_iconColor="@color/bus_tab"/>
+    <item
+        android:id="@+id/student_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"
+        app:cnb_iconColor="@color/bus_tab"
+        app:cnb_backgroundColor="@color/colorWhite"/>
+
+</menu>

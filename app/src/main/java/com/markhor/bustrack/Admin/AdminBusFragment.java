@@ -3,6 +3,7 @@ package com.markhor.bustrack.Admin;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -13,19 +14,30 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.markhor.bustrack.ModelClasses.BusLocations;
 import com.markhor.bustrack.ModelClasses.DriverInformation;
 import com.markhor.bustrack.R;
 import com.markhor.bustrack.UI.ProgressButton;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -108,7 +120,6 @@ public class AdminBusFragment extends Fragment {
                 createDriver();
             }
         });
-
         return view;
     }
 
@@ -127,7 +138,9 @@ public class AdminBusFragment extends Fragment {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         mDriverId = task.getResult().getUser().getUid();
+                        Log.d(TAG, "onComplete: DriverId" + mDriverId);
                         uploadUserInfoToFirestore(name, email, phoneNumber, busNumber);
+
                     } else {
                         progressButton.buttonStop();
                         Toast.makeText(getActivity(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -138,34 +151,57 @@ public class AdminBusFragment extends Fragment {
         }
     }
 
+
     private void uploadUserInfoToFirestore(String name, String email, String phoneNumber, String busNumber) {
 
         if (mDriverId != null) {
+            Log.d(TAG, "uploadUserInfoToFirestore: Uploading Started");
             DocumentReference driverRef = RootRef.collection("Drivers").document(mDriverId);
             DriverInformation driverInformation = new DriverInformation(mDriverId, name, email, phoneNumber, phoneNumber, busNumber);
             driverRef.set(driverInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getActivity(), "Driver Created Successfully", Toast.LENGTH_SHORT).show();
                         mDriverEmail.getEditText().setText(null);
                         mDriverName.getEditText().setText(null);
                         mDriverPhoneNumber.getEditText().setText(null);
                         mDriverBusNumber.getEditText().setText(null);
                         mDriverId = null;
-                        progressButton.buttonDone();
                     } else {
                         progressButton.buttonStop();
                         Toast.makeText(getActivity(), "User Data Not Uploaded To FireStore", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
+
+            DocumentReference busLocationRef = RootRef.collection("Bus Locations").document(mDriverId);
+            GeoPoint geoPoint = new GeoPoint(1, 1);
+            BusLocations mBusLocations = new BusLocations(geoPoint, null, driverInformation);
+            busLocationRef.set(mBusLocations).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "onComplete: Bus Location is Also Saved IN Bus Location Collection");
+                    } else
+                        Log.d(TAG, "onComplete: " + task.getException().getMessage());
+                }
+            });
+
             Map<String, Object> type = new HashMap<>();
             type.put("userid", mDriverId);
             type.put("type", "driver");
 
             DocumentReference typeRef = RootRef.collection("User Type").document(mDriverId);
-            typeRef.set(type);
+            typeRef.set(type).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()) {
+                        Toast.makeText(getActivity(), "Driver Created Successfully", Toast.LENGTH_SHORT).show();
+                        progressButton.buttonStop();
+                    }
+                }
+            });
+
         } else {
             Toast.makeText(getActivity(), "Driver ID is Empty.", Toast.LENGTH_SHORT).show();
             progressButton.buttonStop();
